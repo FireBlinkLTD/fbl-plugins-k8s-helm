@@ -1,0 +1,145 @@
+#
+# For local execution:
+# circleci local execute --skip-checkout=false --repo-url="/fake-remote" --volume="${$(pwd)}":"/fake-remote"
+#
+# Note: you might need to uncomment few lines below (read comments) as local and remote machines are different
+#
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.12
+
+jobs:
+  build_only:
+    <<: *defaults
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      # install all app dependencies
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # build it
+      - run: yarn build
+
+      # persist build
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  build:
+    working_directory: ~/k8s-api-client
+    machine: true
+    steps:
+      - run:
+          name: Install nvm
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+
+            if [[ -z "$CIRCLE_BUILD_NUM" ]]; then
+              export NVM_DIR="$HOME/.nvm"
+              echo 'export NVM_DIR=$HOME/.nvm' >> $BASH_ENV
+              echo 'source $NVM_DIR/nvm.sh' >> $BASH_ENV
+            else
+              export NVM_DIR=/opt/circleci/.nvm
+              echo 'export NVM_DIR=/opt/circleci/.nvm' >> $BASH_ENV
+              echo 'source $NVM_DIR/nvm.sh' >> $BASH_ENV
+            fi
+      - run:  
+          name: Install Node.js
+          command: |           
+            nvm install --lts
+            nvm alias default 'lts/*'
+
+            # Install Yarn package manager
+            npm install --global yarn
+
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
+      - checkout
+
+      - run: 
+          name: yarn install && yarn build
+          command: |
+            yarn install
+            yarn build     
+
+      - run: 
+          name: run tests and generate coverage report
+          command: |
+            yarn docker:test                                  
+      
+      # send test coverage
+      - run: bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage.lcov      
+
+      # store artifacts
+      - store_artifacts:
+          path: ./coverage
+
+      # store artifacts
+      - store_artifacts:
+          path: ./mochawesome-report
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+
+      - run:
+          name: Publish package
+          command: npm publish --access public
+
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+/
+            branches:
+              # as execution takes really long time we should not enable it for all branches and PRs
+              only: 
+                - master
+                - develop     
+
+      - build_only:           
+          filters:
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+/
+            branches:
+              ignore: /.*/
+
+      - deploy:
+          requires:
+            - build
+            - build_only
+          filters:
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+/
+            branches:
+              ignore: /.*/

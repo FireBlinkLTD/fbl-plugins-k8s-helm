@@ -1,0 +1,145 @@
+import { ActionProcessor, FSUtil, TempPathsRegistry } from 'fbl';
+import * as Joi from 'joi';
+import Container from 'typedi';
+import { promisify } from 'util';
+import { writeFile, exists } from 'fs';
+import { dump } from 'js-yaml';
+
+import { BaseActionProcessor } from './BaseActionProcessor';
+
+const writeFileAsync = promisify(writeFile);
+const existsAsync = promisify(exists);
+
+export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
+    private static validationSchema = Joi.object({
+        // release name
+        release: Joi.string().required(),
+
+        // chart name or local path
+        chart: Joi.string().required(),
+
+        // specify the exact chart version to use. If this is not specified, the latest version is used
+        version: Joi.string(),
+
+        // K8s namespace
+        namespace: Joi.string(),
+
+        // variables to pass for the helm chart
+        variables: Joi.object({
+            inline: Joi.any(),
+            files: Joi.array().items(Joi.string()),
+        }),
+
+        // force resource update through delete/recreate if needed
+        force: Joi.boolean(),
+
+        // if set, will wait until all Pods, PVCs, Services, and minimum number of Pods of a Deployment are in a ready state before marking the release as successful. It will wait for as long as `timeout`
+        wait: Joi.boolean(),
+
+        // time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks) (default 300)
+        timeout: Joi.number()
+            .integer()
+            .min(0)
+            .max(60 * 60), // 1h deployment limit
+
+        // extra arguments to append to the command
+        // refer to `helm help upgrade` for all available options
+        extra: Joi.array().items(Joi.string()),
+    })
+        .required()
+        .options({ abortEarly: true });
+
+    /**
+     * @inheritdoc
+     */
+
+    getValidationSchema(): Joi.SchemaLike | null {
+        return UpgradeOrInstallActionProcessor.validationSchema;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    async execute(): Promise<void> {
+        this.snapshot.log(
+            `Ugrading or installing release ${this.options.release} of helm chart ${this.options.chart}@${this.options
+                .version || 'latest'}`,
+        );
+
+        const args = await this.prepareCLIArgs();
+        const result = await this.execHelmCommand(args);
+
+        if (result.code !== 0) {
+            this.snapshot.log('exit code: ' + result.code, true);
+            this.snapshot.log('stdout: ' + result.stdout, true);
+            this.snapshot.log('sterr: ' + result.stderr, true);
+
+            throw new Error(`"helm upgrade --install ${this.options.release} ${this.options.chart}" command failed.`);
+        }
+    }
+
+    /**
+     * Prepare CLI args
+     */
+    private async prepareCLIArgs(): Promise<string[]> {
+        const tempPathsRegistry = Container.get(TempPathsRegistry);
+
+        const args: string[] = ['upgrade', '--install'];
+
+        this.pushWithValue(args, '--namespace', this.options.namespace);
+        this.pushWithValue(args, '--timeout', this.options.timeout);
+
+        this.pushWithoutValue(args, '--wait', this.options.wait);
+        this.pushWithoutValue(args, '--force', this.options.force);
+
+        if (this.options.variables) {
+            if (this.options.variables.files) {
+                this.options.variables.files.forEach((f: string) => {
+                    args.push('-f', FSUtil.getAbsolutePath(f, this.snapshot.wd));
+                });
+            }
+
+            if (this.options.variables.inline) {
+                const tmpFile = await tempPathsRegistry.createTempFile(false, '.yml');
+                const yml = dump(this.options.variables.inline);
+                await writeFileAsync(tmpFile, yml, 'utf8');
+                args.push('-f', tmpFile);
+            }
+        }
+
+        if (this.options.extra) {
+            args.push(...this.options.extra);
+        }
+
+        args.push(this.options.release);
+
+        const localPath = FSUtil.getAbsolutePath(this.options.chart, this.snapshot.wd);
+        const existsLocally = await existsAsync(localPath);
+
+        if (existsLocally) {
+            args.push(localPath);
+        } else {
+            args.push(this.options.chart);
+        }
+
+        return args;
+    }
+
+    /**
+     * Push argument with value if value exists
+     */
+    private pushWithValue(args: string[], name: string, value: any): void {
+        if (value !== undefined) {
+            args.push(name, value.toString());
+        }
+    }
+
+    /**
+     * Push argument only if value is true
+     */
+    private pushWithoutValue(args: string[], name: string, value: boolean): void {
+        if (value) {
+            args.push(name);
+        }
+    }
+}

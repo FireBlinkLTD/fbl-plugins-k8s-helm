@@ -1,0 +1,6 @@
+bail: true
+timeout: 300000
+require: source-map-support/register
+reporter: mochawesome  
+spec:
+ - dist/test/**/*.js
