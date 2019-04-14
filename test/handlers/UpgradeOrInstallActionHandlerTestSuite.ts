@@ -136,8 +136,12 @@ class UpgradeOrInstallActionHandlerTestSuite {
                         value: 'TST',
                     },
                 ],
-            },
+            }            
         };
+        
+        options.extra = [
+            '--recreate-pods'
+        ];
 
         processor = actionHandler.getProcessor(options, context, snapshot, {});
 
@@ -150,6 +154,23 @@ class UpgradeOrInstallActionHandlerTestSuite {
         assert.strictEqual(filteredPods.length, 2);
         assert.strictEqual(filteredPods[0].metadata.labels.app, filteredPods[1].metadata.labels.app);
         assert.strictEqual(filteredPods[0].metadata.labels.release, filteredPods[1].metadata.labels.release);
+    }    
+
+    @test()
+    async failToInstallMissingChart(): Promise<void> {
+        const actionHandler = new UpgradeOrInstallActionHandler();
+        const context = ContextUtil.generateEmptyContext();
+        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+
+        const options = {
+            chart: 'non-existing/test',
+            release: 'remote-test-1'           
+        };
+
+        const processor = actionHandler.getProcessor(options, context, snapshot, {});
+
+        await processor.validate();
+        await chai.expect(processor.execute()).to.be.rejectedWith('"helm upgrade --install remote-test-1 non-existing/test" command failed');
     }
 
     @test()
