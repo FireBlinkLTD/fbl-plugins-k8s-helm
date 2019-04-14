@@ -5,7 +5,7 @@ set -e
 bash test/assets/k8s-init.sh
 
 # add helm chart repo
-mkdir test/assets/helm/repo
+mkdir -p test/assets/helm/repo
 helm package test/assets/helm/test --destination test/assets/helm/repo
 helm repo index test/assets/helm/repo
 http-server -p 9999 test/assets/helm/repo &

@@ -42,9 +42,12 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
             .min(0)
             .max(60 * 60), // 1h deployment limit
 
+        // print debug statement
+        debug: Joi.boolean(),
+
         // extra arguments to append to the command
         // refer to `helm help upgrade` for all available options
-        extra: Joi.array().items(Joi.string()),
+        extra: Joi.array().items(Joi.string()),        
     })
         .required()
         .options({ abortEarly: true });
@@ -69,11 +72,19 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         const args = await this.prepareCLIArgs();
         const result = await this.execHelmCommand(args);
 
-        if (result.code !== 0) {
+        if (result.code !== 0 || this.options.debug) {
             this.snapshot.log('exit code: ' + result.code, true);
-            this.snapshot.log('stdout: ' + result.stdout, true);
-            this.snapshot.log('sterr: ' + result.stderr, true);
+            
+            if (result.stdout) {
+                this.snapshot.log('stdout: ' + result.stdout, true);
+            }
 
+            if (result.stderr) {
+                this.snapshot.log('sterr: ' + result.stderr, true);
+            }
+        }
+
+        if (result.code !== 0) {            
             throw new Error(`"helm upgrade --install ${this.options.release} ${this.options.chart}" command failed.`);
         }
     }
@@ -91,6 +102,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
         this.pushWithoutValue(args, '--wait', this.options.wait);
         this.pushWithoutValue(args, '--force', this.options.force);
+        this.pushWithoutValue(args, '--debug', this.options.debug);
 
         if (this.options.variables) {
             if (this.options.variables.files) {

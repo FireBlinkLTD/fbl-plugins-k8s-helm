@@ -111,7 +111,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const options: any = {
             chart: 'test/assets/helm/test',
-            release: 'ftpo-1',
+            release: 'ftpo-iu-1',
             wait: true,
             timeout: 100,
         };
@@ -139,8 +139,9 @@ class UpgradeOrInstallActionHandlerTestSuite {
             }            
         };
         
+        options.wait = false;
         options.extra = [
-            '--recreate-pods'
+            '--debug'
         ];
 
         processor = actionHandler.getProcessor(options, context, snapshot, {});
@@ -194,6 +195,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
                     ],
                 },
             },
+            debug: true
         };
 
         const processor = actionHandler.getProcessor(options, context, snapshot, {});
