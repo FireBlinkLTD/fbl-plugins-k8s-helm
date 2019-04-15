@@ -4,6 +4,16 @@ Install, Update, Delete helm chart releases with ease in your [fbl](https://fbl.
 
 [![CircleCI](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm.svg?style=svg)](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm) [![Greenkeeper badge](https://badges.greenkeeper.io/FireBlinkLTD/fbl-plugins-k8s-helm.svg)](https://greenkeeper.io/)
 
+## Purpose
+
+[fbl](https://fbl.fireblink.com) is a **flow** automation tool. That generally means it can automate any kind of routine processes and allows to create some really complex combinations of actions, even non related to deployment itself.
+
+With this plugin you can describe the entire cluster state you need to have, design your dependencies across helm charts (DB + backend + frontend + ingress configuration), run extra scripts before, after, in the middle of your deployment, run deployment in parallel, in a sequence, in the way you need it to be executed.
+
+Share senvitive information via fbl secrets that will never leak to the execution logs. Store them inside git repository for convinience and securelly inside encrypted vault (check [@fbl-plugins/crypto](https://github.com/FireBlinkLTD/fbl-plugins-crypto)).
+
+Be flexible - that is what FBL is designed for.
+
 ## Integration
 
 There are multiple ways how plugin can be integrated into your flow.
@@ -53,4 +63,4 @@ pipeline:
 
 ## Action Handlers
 
-TODO
+* [Update or Install](./docs/UpdateOrInstall.md)

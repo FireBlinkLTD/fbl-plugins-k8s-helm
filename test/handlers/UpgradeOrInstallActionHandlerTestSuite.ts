@@ -104,6 +104,48 @@ class UpgradeOrInstallActionHandlerTestSuite {
     }
 
     @test()
+    async installLocalChartWithVariablesTemplate(): Promise<void> {
+        const tempPathsRegistry = Container.get(TempPathsRegistry);
+
+        const actionHandler = new UpgradeOrInstallActionHandler();
+        const context = ContextUtil.generateEmptyContext();
+        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+
+        const template = await tempPathsRegistry.createTempFile();
+        const actualEnv = [
+            {
+                name: 'TEST',
+                value: 'TST',
+            },
+        ];
+        await promisify(writeFile)(template, dump({ env: actualEnv }));
+
+        const options: any = {
+            chart: 'test/assets/helm/test',
+            release: 'ftpo-vt-1',
+            wait: true,
+            timeout: 100,
+            variables: {
+                templates: [template],
+            },
+        };
+
+        const processor = actionHandler.getProcessor(options, context, snapshot, {});
+
+        await processor.validate();
+        await processor.execute();
+
+        const api = new APIRequestProcessor();
+        const pods = await api.getAll('/api/v1/namespaces/default/pods');
+        const pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+
+        assert(pod);
+
+        const env = pod.spec.containers.find((c: any) => c.name === 'test').env;
+        assert.deepStrictEqual(env, actualEnv);
+    }
+
+    @test()
     async installAndUpdateLocalChart(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
@@ -136,13 +178,11 @@ class UpgradeOrInstallActionHandlerTestSuite {
                         value: 'TST',
                     },
                 ],
-            }            
+            },
         };
-        
+
         options.wait = false;
-        options.extra = [
-            '--debug'
-        ];
+        options.extra = ['--debug'];
 
         processor = actionHandler.getProcessor(options, context, snapshot, {});
 
@@ -155,7 +195,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
         assert.strictEqual(filteredPods.length, 2);
         assert.strictEqual(filteredPods[0].metadata.labels.app, filteredPods[1].metadata.labels.app);
         assert.strictEqual(filteredPods[0].metadata.labels.release, filteredPods[1].metadata.labels.release);
-    }    
+    }
 
     @test()
     async failToInstallMissingChart(): Promise<void> {
@@ -165,13 +205,15 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const options = {
             chart: 'non-existing/test',
-            release: 'remote-test-1'           
+            release: 'remote-test-1',
         };
 
         const processor = actionHandler.getProcessor(options, context, snapshot, {});
 
         await processor.validate();
-        await chai.expect(processor.execute()).to.be.rejectedWith('"helm upgrade --install remote-test-1 non-existing/test" command failed');
+        await chai
+            .expect(processor.execute())
+            .to.be.rejectedWith('"helm upgrade --install remote-test-1 non-existing/test" command failed');
     }
 
     @test()
@@ -195,7 +237,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
                     ],
                 },
             },
-            debug: true
+            debug: true,
         };
 
         const processor = actionHandler.getProcessor(options, context, snapshot, {});

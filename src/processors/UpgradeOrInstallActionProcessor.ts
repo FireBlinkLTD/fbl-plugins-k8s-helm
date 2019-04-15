@@ -1,9 +1,9 @@
-import { ActionProcessor, FSUtil, TempPathsRegistry } from 'fbl';
+import { ActionProcessor, FSUtil, TempPathsRegistry, FlowService, ContextUtil } from 'fbl';
 import * as Joi from 'joi';
 import Container from 'typedi';
 import { promisify } from 'util';
 import { writeFile, exists } from 'fs';
-import { dump } from 'js-yaml';
+import { dump, safeLoad } from 'js-yaml';
 
 import { BaseActionProcessor } from './BaseActionProcessor';
 
@@ -28,6 +28,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         variables: Joi.object({
             inline: Joi.any(),
             files: Joi.array().items(Joi.string()),
+            templates: Joi.array().items(Joi.string()),
         }),
 
         // force resource update through delete/recreate if needed
@@ -47,7 +48,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
         // extra arguments to append to the command
         // refer to `helm help upgrade` for all available options
-        extra: Joi.array().items(Joi.string()),        
+        extra: Joi.array().items(Joi.string()),
     })
         .required()
         .options({ abortEarly: true });
@@ -74,7 +75,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
         if (result.code !== 0 || this.options.debug) {
             this.snapshot.log('exit code: ' + result.code, true);
-            
+
             if (result.stdout) {
                 this.snapshot.log('stdout: ' + result.stdout, true);
             }
@@ -84,7 +85,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
             }
         }
 
-        if (result.code !== 0) {            
+        if (result.code !== 0) {
             throw new Error(`"helm upgrade --install ${this.options.release} ${this.options.chart}" command failed.`);
         }
     }
@@ -94,6 +95,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
      */
     private async prepareCLIArgs(): Promise<string[]> {
         const tempPathsRegistry = Container.get(TempPathsRegistry);
+        const flowService = Container.get(FlowService);
 
         const args: string[] = ['upgrade', '--install'];
 
@@ -109,6 +111,42 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
                 this.options.variables.files.forEach((f: string) => {
                     args.push('-f', FSUtil.getAbsolutePath(f, this.snapshot.wd));
                 });
+            }
+
+            if (this.options.variables.templates) {
+                for (const templatePath of this.options.variables.templates) {
+                    let fileContent: string = await FSUtil.readTextFile(
+                        FSUtil.getAbsolutePath(templatePath, this.snapshot.wd),
+                    );
+
+                    // resolve global template
+                    fileContent = await flowService.resolveTemplate(
+                        this.context.ejsTemplateDelimiters.global,
+                        fileContent,
+                        this.context,
+                        this.snapshot,
+                        this.parameters,
+                    );
+
+                    let fileContentObject = safeLoad(fileContent);
+
+                    // resolve local template
+                    fileContentObject = await flowService.resolveOptionsWithNoHandlerCheck(
+                        this.context.ejsTemplateDelimiters.local,
+                        fileContentObject,
+                        this.context,
+                        this.snapshot,
+                        this.parameters,
+                        false,
+                    );
+
+                    // resolve references
+                    fileContentObject = ContextUtil.resolveReferences(fileContentObject, this.context, this.parameters);
+
+                    const filePath = await tempPathsRegistry.createTempFile();
+                    await writeFileAsync(filePath, dump(fileContentObject), 'utf8');
+                    args.push('-f', filePath);
+                }
             }
 
             if (this.options.variables.inline) {
