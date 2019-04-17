@@ -11,6 +11,7 @@
     "depcheck": "yarn-check",
     "start": "node dist/src/cli.js",
     "test": "nyc --reporter=html --reporter=text mocha",
+    "test:mocha": "mocha",
     "docker:test": "rimraf coverage/ && rimraf .nyc_output/ && rimraf mochawesome-report/ && docker-compose up --build --abort-on-container-exit",
     "build": "rimraf ./dist/ && tsc",
     "lint": "tslint -c tslint.json src/**/*.ts test/**/*.ts index.ts",

@@ -1,5 +1,5 @@
 import { IPlugin } from 'fbl';
-import { UpgradeOrInstallActionHandler } from './src/handlers';
+import { UpgradeOrInstallActionHandler, DeleteActionHandler } from './src/handlers';
 
 const packageJson = require('../package.json');
 
@@ -14,12 +14,12 @@ module.exports = <IPlugin>{
         plugins: {
             // pluginId: '<0.0.1'
         },
-        applications: [],
+        applications: ['helm'],
     },
 
     reporters: [],
 
-    actionHandlers: [new UpgradeOrInstallActionHandler()],
+    actionHandlers: [new DeleteActionHandler(), new UpgradeOrInstallActionHandler()],
 
     templateUtils: [],
 };

@@ -63,4 +63,6 @@ pipeline:
 
 ## Action Handlers
 
+* [Delete](./docs/Delete.md)
 * [Update or Install](./docs/UpdateOrInstall.md)
+

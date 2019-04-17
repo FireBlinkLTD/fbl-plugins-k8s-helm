@@ -15,6 +15,7 @@ helm repo add localhost http://localhost:9999
 echo "-> running tests"
 cd /usr/app
 yarn test
+#yarn test:mocha
 exit_code=$?
 echo "<- tests execution completed"
 

@@ -35,4 +35,22 @@ export abstract class BaseActionProcessor extends ActionProcessor {
             stderr: stderr.join('\n'),
         };
     }
+
+    /**
+     * Push argument with value if value exists
+     */
+    protected pushWithValue(args: string[], name: string, value: any): void {
+        if (value !== undefined) {
+            args.push(name, value.toString());
+        }
+    }
+
+    /**
+     * Push argument only if value is true
+     */
+    protected pushWithoutValue(args: string[], name: string, value: boolean): void {
+        if (value) {
+            args.push(name);
+        }
+    }
 }
