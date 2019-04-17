@@ -1,20 +1,19 @@
 import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, ChildProcessService } from 'fbl';
 import * as assert from 'assert';
-import { Container } from 'typedi';
-import { APIRequestProcessor } from '@fireblink/k8s-api-client';
 
-import { DeleteActionHandler } from '../../src/handlers';
+import { TestActionHandler } from '../../src/handlers';
+import Container from 'typedi';
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 
 @suite()
-class DeleteActionHandlerTestSuite {
+class TestActionHandlerTestSuite {
     @test()
     async failValidation(): Promise<void> {
-        const actionHandler = new DeleteActionHandler();
+        const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 
@@ -44,7 +43,7 @@ class DeleteActionHandlerTestSuite {
 
     @test()
     async passValidation(): Promise<void> {
-        const actionHandler = new DeleteActionHandler();
+        const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 
@@ -61,12 +60,12 @@ class DeleteActionHandlerTestSuite {
     }
 
     @test()
-    async deleteRelease(): Promise<void> {
+    async testRelease(): Promise<void> {
         const childProcessService = Container.get(ChildProcessService);
 
         const options = {
-            release: 'test-del',
-            purge: true,
+            release: 'test-release',
+            cleanup: true,
             debug: true,
             extra: ['--tiller-namespace', 'kube-system'],
         };
@@ -78,8 +77,8 @@ class DeleteActionHandlerTestSuite {
         );
 
         assert.strictEqual(code, 0);
-
-        const actionHandler = new DeleteActionHandler();
+        
+        const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 
@@ -87,32 +86,17 @@ class DeleteActionHandlerTestSuite {
 
         await processor.validate();
         await processor.execute();
-
-        let pod: any;
-        for (let i = 0; i < 30; i++) {
-            await new Promise(res => setTimeout(res, 1000));
-
-            const api = new APIRequestProcessor();
-            const pods = await api.getAll('/api/v1/namespaces/default/pods');
-            pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
-
-            if (!pod) {
-                break;
-            }
-        }
-
-        assert(!pod);
     }
 
     @test()
-    async deleteNonExistingRelease(): Promise<void> {
+    async testNonExistingRelease(): Promise<void> {
         const options = {
-            release: 'test-del-non-existing',
-            purge: true,
+            release: 'test-non-existing-release',
+            cleanup: true,
             debug: true,
         };
 
-        const actionHandler = new DeleteActionHandler();
+        const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
         const snapshot = new ActionSnapshot('.', {}, '', 0, {});
 

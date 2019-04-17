@@ -1,26 +1,25 @@
-# Delete Helm Chart Release
+# Test Helm Chart Release
 
-Action handler that allows to delete the release.
+Action handler that allows to test the release.
 
-**ID:** `com.fireblink.fbl.plugins.k8s.helm.delete`
+**ID:** `com.fireblink.fbl.plugins.k8s.helm.test`
 
 **Aliases:**
-* `fbl.plugins.k8s.helm.delete`
-* `k8s.helm.delete`
-* `helm.delete`
-* `helm.del`
+* `fbl.plugins.k8s.helm.test`
+* `k8s.helm.test`
+* `helm.test`
 
 ## Syntax:
 
 ```yaml
 pipeline:
-  helm.del:
+  helm.test:
     # [required] Release name.
     release: 'string'
 
-    # [optional] Remove the release from the store and make its name free for later use.
+    # [optional] Delete test pods upon completion.
     # Default value: false
-    purge: true
+    cleanup: true
 
     # [optional] Time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks).
     # Default value: 300
