@@ -32,6 +32,7 @@
     "@commitlint/cli": "7.5.2",
     "@commitlint/config-conventional": "7.5.0",
     "@fireblink/k8s-api-client": "1.1.0",
+    "@istanbuljs/nyc-config-typescript": "0.1.1",
     "@types/chai": "4.1.7",
     "@types/joi": "14.3.3",
     "@types/js-yaml": "3.12.1",
@@ -52,15 +53,11 @@
     "prettier": "1.17.0",
     "rimraf": "2.6.3",
     "source-map-support": "0.5.12",
+    "ts-node": "8.1.0",
     "tslint": "5.16.0",
     "tslint-config-prettier": "1.18.0",
     "typescript": "3.4.3",
     "yarn-check": "0.0.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
   },
   "nyc": {
     "check-coverage": true,
@@ -69,10 +66,13 @@
     "statements": 100,
     "functions": 100,
     "branches": 100,
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "include": [
+      "src"
+    ],
     "exclude": [
-      "dist/src/**/index.js",
-      "dist/index.js",
-      "dist/test/**/*.js"
+      "src/**/index.ts",
+      "src/interfaces/*.ts"
     ]
   },
   "contributors": [
