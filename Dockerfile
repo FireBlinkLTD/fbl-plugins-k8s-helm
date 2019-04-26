@@ -36,7 +36,7 @@ RUN curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE
     chmod +x /usr/local/bin/docker-compose
 
 # Install Node.js
-ENV NODEJS_VERSION="10.15.0"
+ENV NODEJS_VERSION="10.15.3"
 RUN curl -fsSLO --compressed "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz"
 RUN tar -xJvf node-v${NODEJS_VERSION}-linux-x64.tar.xz -C /tmp
 RUN cp -R /tmp/node-v${NODEJS_VERSION}-linux-x64/* /usr/local

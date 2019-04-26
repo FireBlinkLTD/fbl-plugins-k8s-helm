@@ -241,11 +241,6 @@
     json-streaming-reader "1.0.2"
     request "2.88.0"
 
-"@istanbuljs/nyc-config-typescript@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@istanbuljs/nyc-config-typescript/-/nyc-config-typescript-0.1.1.tgz#8c7fa6b03f113f62229c7b0c14976c7d9f695c45"
-  integrity sha512-vkozXhhyHAmsY76a9t9R86fRrETUsuFkosxxuKyceBf0BZS9DW0AOQwLPvX5HFvNjkhES4aKEC4HtMbHEDVLPw==
-
 "@marionebl/sander@^0.6.0":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@marionebl/sander/-/sander-0.6.1.tgz#1958965874f24bc51be48875feb50d642fc41f7b"
