@@ -71,23 +71,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         );
 
         const args = await this.prepareCLIArgs();
-        const result = await this.execHelmCommand(args);
-
-        if (result.code !== 0 || this.options.debug) {
-            this.snapshot.log('exit code: ' + result.code, true);
-
-            if (result.stdout) {
-                this.snapshot.log('stdout: ' + result.stdout, true);
-            }
-
-            if (result.stderr) {
-                this.snapshot.log('sterr: ' + result.stderr, true);
-            }
-        }
-
-        if (result.code !== 0) {
-            throw new Error(`"helm upgrade --install ${this.options.release} ${this.options.chart}" command failed.`);
-        }
+        await this.execHelmCommand(args, this.options.debug);
     }
 
     /**

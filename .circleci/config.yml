@@ -41,7 +41,7 @@ jobs:
           paths: .
 
   build:
-    working_directory: ~/k8s-api-client
+    working_directory: ~/workspace
     machine: true
     steps:
       - run:
