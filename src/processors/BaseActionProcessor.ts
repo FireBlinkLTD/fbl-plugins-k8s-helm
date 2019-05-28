@@ -37,10 +37,12 @@ export abstract class BaseActionProcessor extends ActionProcessor {
         if (code !== 0 || debug) {
             this.snapshot.log('exit code: ' + code, true);
 
+            /* istanbul ignore else */
             if (stdout) {
                 this.snapshot.log('stdout: ' + stdout, true);
             }
 
+            /* istanbul ignore else */
             if (stderr) {
                 this.snapshot.log('sterr: ' + stderr, true);
             }
