@@ -120,12 +120,7 @@ workflows:
       - build:
           filters:
             tags:
-              only: /^[0-9]+\.[0-9]+\.[0-9]+/
-            branches:
-              # as execution takes really long time we should not enable it for all branches and PRs
-              only: 
-                - master
-                - develop     
+              only: /^[0-9]+\.[0-9]+\.[0-9]+/            
 
       - build_only:           
           filters:
