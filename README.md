@@ -3,8 +3,10 @@
 Install, Update, Delete helm chart releases with ease in your [fbl](https://fbl.fireblink.com) flows.
 
 [![CircleCI](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm.svg?style=svg)](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm)
-[![Greenkeeper badge](https://badges.greenkeeper.io/FireBlinkLTD/fbl-plugins-k8s-helm.svg)](https://greenkeeper.io/) 
+[![Greenkeeper badge](https://badges.greenkeeper.io/FireBlinkLTD/fbl-plugins-k8s-helm.svg)](https://greenkeeper.io/)
 [![codecov](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-k8s-helm/branch/master/graph/badge.svg)](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-k8s-helm)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/FireBlinkLTD/fbl-plugins-k8s-helm.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-k8s-helm/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/FireBlinkLTD/fbl-plugins-k8s-helm.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-k8s-helm/context:javascript)
 
 ## Purpose
 
@@ -17,6 +19,7 @@ At FireBlink we generally treat entire cluster as a single product. As any other
 As cluster is a product, it has it's own version, migration scripts, and set of helm/kubectl commands required to stand up / update the cluster.
 
 To help with that 2 main plugins for FBL has been created:
+
 - [@fbl-plugins/k8s-kubectl](https://github.com/FireBlinkLTD/fbl-plugins-k8s-kubectl) - allows to create/update/delete ConfigMaps, Secrets, CRDs, etc.
 - [@fbl-plugins/k8s-helm](https://github.com/FireBlinkLTD/fbl-plugins-k8s-helm) - install/update or delete of helm releases
 
@@ -40,7 +43,7 @@ This is the most recommended way. Create `package.json` next to your flow file w
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "fbl": "fbl"    
+    "fbl": "fbl"
   },
   "license": "UNLICENSED",
   "dependencies": {
@@ -68,14 +71,13 @@ requires:
   fbl: '>=1.7.0'
   plugins:
     '@fbl-plguins/k8s-helm': '>=1.0.0'
-    
+
 pipeline:
   # your flow goes here
 ```
 
 ## Action Handlers
 
-* [helm delete](./docs/Delete.md)
-* [helm test](./docs/Test.md)
-* [helm update --install](./docs/UpdateOrInstall.md)
-
+- [helm delete](./docs/Delete.md)
+- [helm test](./docs/Test.md)
+- [helm update --install](./docs/UpdateOrInstall.md)
