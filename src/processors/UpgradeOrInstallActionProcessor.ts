@@ -6,6 +6,7 @@ import { writeFile, exists } from 'fs';
 import { dump, safeLoad } from 'js-yaml';
 
 import { BaseActionProcessor } from './BaseActionProcessor';
+import { dirname } from 'path';
 
 const writeFileAsync = promisify(writeFile);
 const existsAsync = promisify(exists);
@@ -99,9 +100,8 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
             if (this.options.variables.templates) {
                 for (const templatePath of this.options.variables.templates) {
-                    let fileContent: string = await FSUtil.readTextFile(
-                        FSUtil.getAbsolutePath(templatePath, this.snapshot.wd),
-                    );
+                    const absolutePath = FSUtil.getAbsolutePath(templatePath, this.snapshot.wd);
+                    let fileContent: string = await FSUtil.readTextFile(absolutePath);
 
                     // resolve global template
                     fileContent = await flowService.resolveTemplate(
@@ -110,6 +110,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
                         this.context,
                         this.snapshot,
                         this.parameters,
+                        dirname(absolutePath),
                     );
 
                     let fileContentObject = safeLoad(fileContent);
