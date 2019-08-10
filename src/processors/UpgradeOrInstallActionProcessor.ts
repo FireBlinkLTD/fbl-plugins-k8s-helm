@@ -6,7 +6,6 @@ import { writeFile, exists } from 'fs';
 import { dump, safeLoad } from 'js-yaml';
 
 import { BaseActionProcessor } from './BaseActionProcessor';
-import { dirname } from 'path';
 
 const writeFileAsync = promisify(writeFile);
 const existsAsync = promisify(exists);
@@ -110,7 +109,6 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
                         this.context,
                         this.snapshot,
                         this.parameters,
-                        dirname(absolutePath),
                     );
 
                     let fileContentObject = safeLoad(fileContent);
