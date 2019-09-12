@@ -47,7 +47,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
     async failValidation(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await chai.expect(actionHandler.getProcessor([], context, snapshot, {}).validate()).to.be.rejected;
 
@@ -88,7 +88,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
     async passValidation(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await actionHandler
             .getProcessor(
@@ -109,7 +109,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const template = await tempPathsRegistry.createTempFile();
         const actualEnv = [
@@ -149,7 +149,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
     async installAndUpdateLocalChart(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const options: any = {
             chart: 'test/assets/helm/test',
@@ -201,7 +201,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
     async failToInstallMissingChart(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const options = {
             chart: 'non-existing/test',
@@ -220,7 +220,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
     async installChartFromRepository(): Promise<void> {
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const options = {
             chart: 'localhost/test',
@@ -258,7 +258,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const variables = dump({
             env: [

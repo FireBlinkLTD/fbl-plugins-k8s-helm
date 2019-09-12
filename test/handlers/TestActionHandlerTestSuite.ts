@@ -15,7 +15,7 @@ class TestActionHandlerTestSuite {
     async failValidation(): Promise<void> {
         const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await chai.expect(actionHandler.getProcessor([], context, snapshot, {}).validate()).to.be.rejected;
 
@@ -45,7 +45,7 @@ class TestActionHandlerTestSuite {
     async passValidation(): Promise<void> {
         const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         await actionHandler
             .getProcessor(
@@ -77,10 +77,10 @@ class TestActionHandlerTestSuite {
         );
 
         assert.strictEqual(code, 0);
-        
+
         const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const processor = actionHandler.getProcessor(options, context, snapshot, {});
 
@@ -98,7 +98,7 @@ class TestActionHandlerTestSuite {
 
         const actionHandler = new TestActionHandler();
         const context = ContextUtil.generateEmptyContext();
-        const snapshot = new ActionSnapshot('.', {}, '', 0, {});
+        const snapshot = new ActionSnapshot('index.yml', '.', {}, '', 0, {});
 
         const processor = actionHandler.getProcessor(options, context, snapshot, {});
 
