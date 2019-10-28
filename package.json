@@ -1,6 +1,6 @@
 {
   "name": "@fbl-plugins/k8s-helm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "FBL plugin for K8s Helm CLI",
   "main": "dist/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
     "@fireblink/k8s-api-client": "1.2.0",
-    "@types/chai": "4.2.3",
+    "@types/chai": "4.2.4",
     "@types/form-data": "2.5.0",
     "@types/joi": "14.3.3",
     "@types/js-yaml": "3.12.1",
@@ -54,9 +54,9 @@
     "rimraf": "3.0.0",
     "source-map-support": "0.5.13",
     "ts-node": "8.4.1",
-    "tslint": "5.18.0",
+    "tslint": "5.20.0",
     "tslint-config-prettier": "1.18.0",
-    "typescript": "3.5.3",
+    "typescript": "3.6.4",
     "yarn-check": "0.0.3"
   },
   "nyc": {

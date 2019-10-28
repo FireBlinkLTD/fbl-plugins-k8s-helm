@@ -85,6 +85,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
         this.pushWithValue(args, '--namespace', this.options.namespace);
         this.pushWithValue(args, '--timeout', this.options.timeout);
+        this.pushWithValue(args, '--version', this.options.version);
 
         this.pushWithoutValue(args, '--wait', this.options.wait);
         this.pushWithoutValue(args, '--force', this.options.force);
