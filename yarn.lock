@@ -1988,10 +1988,10 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.0"
 
-fbl@1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/fbl/-/fbl-1.10.1.tgz#cd8ad7be88671b74f42fd07ee9f59d2760563514"
-  integrity sha512-SZH5DuvWRDDSTCN9Dn+1L4vPT43hvT2bcCKXRuxCAIvgy0RZ063wDaUz3JCW8sU/Air2rmMBa2NFPxrMpcUctA==
+fbl@1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/fbl/-/fbl-1.10.2.tgz#5670c3d5ad47e471d645ebd450f537e4420d26ad"
+  integrity sha512-KiMNX0khEHG3tYiidVtHeBJ8Qiffka1wwkANapqMNCMDexbBvZTvagh9MVWqecKnvO7xpynPNta8rzCK4NBnAw==
   dependencies:
     cliui "5.0.0"
     colors "1.4.0"
@@ -2011,7 +2011,7 @@ fbl@1.10.1:
     requireg "0.2.2"
     semver "6.3.0"
     table "5.4.6"
-    tar "5.0.2"
+    tar "5.0.5"
     tmp-promise "2.0.2"
     typedi "0.8.0"
     uuid "3.3.3"
@@ -3802,7 +3802,7 @@ minipass@^3.0.0:
   dependencies:
     yallist "^4.0.0"
 
-minizlib@^2.0.0:
+minizlib@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/minizlib/-/minizlib-2.1.0.tgz#fd52c645301ef09a63a2c209697c294c6ce02cf3"
   integrity sha512-EzTZN/fjSvifSX0SlqUERCN39o6T40AMarPbv0MrarSFtIITCBh7bi+dU8nxGFHuqs9jdIAeoYoKuQAAASsPPA==
@@ -5519,15 +5519,15 @@ table@5.4.6:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-tar@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/tar/-/tar-5.0.2.tgz#d75a50cf8a37539f8c1b2077bef5c991920d45d2"
-  integrity sha512-s6QnhHIoyEPImp1Y4Tq3UOhPMT6/4kgHwzeZc9fbgq0/+s6RAzezIT43Meepn5RdUFpxdzQkd5x2PkcFdVIEPw==
+tar@5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/tar/-/tar-5.0.5.tgz#03fcdb7105bc8ea3ce6c86642b9c942495b04f93"
+  integrity sha512-MNIgJddrV2TkuwChwcSNds/5E9VijOiw7kAc1y5hTNJoLDSuIyid2QtLYiCYNnICebpuvjhPQZsXwUL0O3l7OQ==
   dependencies:
     chownr "^1.1.3"
     fs-minipass "^2.0.0"
     minipass "^3.0.0"
-    minizlib "^2.0.0"
+    minizlib "^2.1.0"
     mkdirp "^0.5.0"
     yallist "^4.0.0"
 
