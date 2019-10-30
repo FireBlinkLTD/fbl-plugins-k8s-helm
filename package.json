@@ -42,7 +42,7 @@
     "commitizen": "4.0.3",
     "conventional-changelog-cli": "2.0.25",
     "cz-conventional-changelog": "3.0.2",
-    "fbl": "1.10.1",
+    "fbl": "1.10.2",
     "husky": "3.0.9",
     "jsonlint": "1.6.3",
     "lint-staged": "9.4.2",
