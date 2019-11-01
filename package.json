@@ -34,7 +34,7 @@
     "@fireblink/k8s-api-client": "1.2.0",
     "@types/chai": "4.2.4",
     "@types/form-data": "2.5.0",
-    "@types/joi": "14.3.3",
+    "@types/joi": "14.3.4",
     "@types/js-yaml": "3.12.1",
     "@types/node": "12.12.4",
     "chai": "4.2.0",
