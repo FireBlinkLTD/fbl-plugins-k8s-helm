@@ -29,8 +29,8 @@
     "fbl": ">=1.10.0 <2.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.2.0",
-    "@commitlint/config-conventional": "8.2.0",
+    "@commitlint/cli": "8.3.4",
+    "@commitlint/config-conventional": "8.3.4",
     "@fireblink/k8s-api-client": "1.2.0",
     "@types/chai": "4.2.7",
     "@types/form-data": "2.5.0",
