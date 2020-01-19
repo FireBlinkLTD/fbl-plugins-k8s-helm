@@ -19,7 +19,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./coverage:/usr/app/coverage
-      - ./.nyc_output:/usr/app/.nyc_output
       - ./mochawesome-report:/usr/app/mochawesome-report
 
       #- ./.kube:/kubeconfigs
