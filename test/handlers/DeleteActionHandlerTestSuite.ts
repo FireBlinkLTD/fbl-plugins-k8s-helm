@@ -66,15 +66,18 @@ class DeleteActionHandlerTestSuite {
 
         const options = {
             release: 'test-del',
-            purge: true,
-            debug: true,
-            extra: ['--tiller-namespace', 'kube-system'],
+            extra: ['--debug'],
         };
 
         const code = await childProcessService.exec(
             'helm',
-            ['install', 'test/assets/helm/test', '--wait', '--name', options.release],
+            ['install', options.release, 'test/assets/helm/test', '--wait'],
             '.',
+            {
+                stderr: str => {
+                    console.error(str.toString());
+                },
+            },
         );
 
         assert.strictEqual(code, 0);
@@ -108,7 +111,6 @@ class DeleteActionHandlerTestSuite {
     async deleteNonExistingRelease(): Promise<void> {
         const options = {
             release: 'test-del-non-existing',
-            purge: true,
             debug: true,
         };
 

@@ -36,7 +36,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         if (releases.length > 0) {
             console.log('-> Removing releases:', releases);
-            await childProcessService.exec('helm', ['delete', '--purge', ...releases], '.');
+            await childProcessService.exec('helm', ['delete', ...releases], '.');
         }
 
         await Container.get(TempPathsRegistry).cleanup();
@@ -181,6 +181,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
             },
         };
 
+        options.force = true;
         options.wait = false;
         options.extra = ['--debug'];
 

@@ -6,9 +6,6 @@ export class DeleteActionProcessor extends BaseActionProcessor {
         // release name
         release: Joi.string().required(),
 
-        // remove the release from the store and make its name free for later use
-        purge: Joi.boolean(),
-
         // time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks) (default 300)
         timeout: Joi.number()
             .integer()
@@ -50,7 +47,6 @@ export class DeleteActionProcessor extends BaseActionProcessor {
         const args: string[] = ['delete'];
 
         this.pushWithValue(args, '--timeout', this.options.timeout);
-        this.pushWithoutValue(args, '--purge', this.options.purge);
         this.pushWithoutValue(args, '--debug', this.options.debug);
 
         if (this.options.extra) {

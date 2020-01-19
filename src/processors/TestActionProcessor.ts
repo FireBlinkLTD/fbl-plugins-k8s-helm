@@ -6,9 +6,6 @@ export class TestActionProcessor extends BaseActionProcessor {
         // release name
         release: Joi.string().required(),
 
-        // delete test pods upon completion
-        cleanup: Joi.boolean(),
-
         // time in seconds to wait for any individual Kubernetes operation (like Jobs for hooks) (default 300)
         timeout: Joi.number()
             .integer()
@@ -50,7 +47,6 @@ export class TestActionProcessor extends BaseActionProcessor {
         const args: string[] = ['test'];
 
         this.pushWithValue(args, '--timeout', this.options.timeout);
-        this.pushWithoutValue(args, '--cleanup', this.options.cleanup);
         this.pushWithoutValue(args, '--debug', this.options.debug);
 
         if (this.options.extra) {

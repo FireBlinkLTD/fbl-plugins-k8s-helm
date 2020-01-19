@@ -65,14 +65,12 @@ class TestActionHandlerTestSuite {
 
         const options = {
             release: 'test-release',
-            cleanup: true,
             debug: true,
-            extra: ['--tiller-namespace', 'kube-system'],
         };
 
         const code = await childProcessService.exec(
             'helm',
-            ['install', 'test/assets/helm/test', '--wait', '--name', options.release],
+            ['install', options.release, 'test/assets/helm/test', '--wait'],
             '.',
         );
 
@@ -92,8 +90,7 @@ class TestActionHandlerTestSuite {
     async testNonExistingRelease(): Promise<void> {
         const options = {
             release: 'test-non-existing-release',
-            cleanup: true,
-            debug: true,
+            extra: ['--debug'],
         };
 
         const actionHandler = new TestActionHandler();
