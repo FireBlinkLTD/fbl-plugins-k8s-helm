@@ -43,7 +43,7 @@
     "conventional-changelog-cli": "2.0.31",
     "cz-conventional-changelog": "3.0.2",
     "fbl": "1.11.0",
-    "husky": "4.1.0",
+    "husky": "4.2.0",
     "jsonlint": "1.6.3",
     "lint-staged": "9.5.0",
     "mocha": "7.0.0",
