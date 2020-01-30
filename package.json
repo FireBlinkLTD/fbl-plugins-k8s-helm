@@ -45,7 +45,7 @@
     "fbl": "1.11.0",
     "husky": "4.2.1",
     "jsonlint": "1.6.3",
-    "lint-staged": "10.0.4",
+    "lint-staged": "10.0.5",
     "mocha": "7.0.1",
     "mocha-typescript": "1.1.17",
     "mochawesome": "4.1.0",
