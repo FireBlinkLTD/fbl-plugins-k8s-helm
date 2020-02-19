@@ -36,7 +36,7 @@
     "@types/form-data": "2.5.0",
     "@types/joi": "14.3.4",
     "@types/js-yaml": "3.12.2",
-    "@types/node": "13.7.2",
+    "@types/node": "13.7.3",
     "chai": "4.2.0",
     "chai-as-promised": "7.1.1",
     "commitizen": "4.0.3",
