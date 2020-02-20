@@ -5,12 +5,13 @@ Action handler that allows to install new / update existing helm chart release.
 **ID:** `com.fireblink.fbl.plugins.k8s.helm.upgrade`
 
 **Aliases:**
-* `fbl.plugins.k8s.helm.upgrade`
-* `fbl.plugins.k8s.helm.install`
-* `k8s.helm.upgrade`
-* `k8s.helm.install`
-* `helm.upgrade`
-* `helm.install`
+
+- `fbl.plugins.k8s.helm.upgrade`
+- `fbl.plugins.k8s.helm.install`
+- `k8s.helm.upgrade`
+- `k8s.helm.install`
+- `helm.upgrade`
+- `helm.install`
 
 ## Syntax:
 
@@ -23,7 +24,7 @@ pipeline:
     # [required} Chart name or local path (absolute or relative to the flow file).
     chart: 'repo/chart'
 
-    # [optional] Specify the exact chart version to use. If this is not specified, 
+    # [optional] Specify the exact chart version to use. If this is not specified,
     # the latest version is used (works only for charts referenced from repositories).
     version: '1.0.0.'
 
@@ -32,28 +33,28 @@ pipeline:
     namespace: 'main'
 
     # [optional] extra variables to override / exted default helm chart values
-    variables: 
+    variables:
       # [optional] list of files to use as sources for values
-      files: 
+      files:
         - assets/chart_values.yml
 
       # [optional] list of files that are EJS templates (both FBL global and local delimiters are supported)
       # Note: template have a priority over `files`
-      templates: 
+      templates:
         - assets/chart_values.tpl.yml
 
       # [optional] define values inline the flow
       # Note: inlive values have a priority over both `files` and `templates`
-      inline: 
+      inline:
         ImagePullPolicy: Always
 
     # [optional] Force resource update through delete/recreate if needed.
     # Default value: false
     force: true
 
-    # [optional] If set, will wait until all Pods, PVCs, Services, and minimum number of Pods 
-    # of a Deployment are in a ready state before marking the release as successful. It will 
-    # wait for as long as `timeout`. 
+    # [optional] If set, will wait until all Pods, PVCs, Services, and minimum number of Pods
+    # of a Deployment are in a ready state before marking the release as successful. It will
+    # wait for as long as `timeout`.
     # Default value: false
     wait: true
 
@@ -68,6 +69,6 @@ pipeline:
 
     # [optional] List of extra arguments to append to the command.
     # Refer to `helm help upgrade` for all available options
-    extra: 
-      --dry-run
+    extra:
+      - --dry-run
 ```

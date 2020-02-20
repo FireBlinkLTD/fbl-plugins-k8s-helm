@@ -20,7 +20,7 @@ export class DeleteActionProcessor extends BaseActionProcessor {
         extra: Joi.array().items(Joi.string()),
     })
         .required()
-        .options({ abortEarly: true });
+        .options({ abortEarly: true, allowUnknown: false });
 
     /**
      * @inheritdoc
@@ -49,9 +49,7 @@ export class DeleteActionProcessor extends BaseActionProcessor {
         this.pushWithValue(args, '--timeout', this.options.timeout);
         this.pushWithoutValue(args, '--debug', this.options.debug);
 
-        if (this.options.extra) {
-            args.push(...this.options.extra);
-        }
+        this.pushAll(args, this.options.extra);
 
         args.push(this.options.release);
 

@@ -1,4 +1,4 @@
-import { ActionProcessor, ChildProcessService } from 'fbl';
+import { ActionProcessor, ChildProcessService, FSUtil } from 'fbl';
 import Container from 'typedi';
 
 export abstract class BaseActionProcessor extends ActionProcessor {
@@ -69,11 +69,29 @@ export abstract class BaseActionProcessor extends ActionProcessor {
     }
 
     /**
+     * Resolve path value and push it to args if provided
+     */
+    protected pushPathValue(args: string[], name: string, value: any): void {
+        if (value !== undefined) {
+            args.push(name, FSUtil.getAbsolutePath(value.toString(), this.snapshot.wd));
+        }
+    }
+
+    /**
      * Push argument only if value is true
      */
     protected pushWithoutValue(args: string[], name: string, value: boolean): void {
         if (value) {
             args.push(name);
+        }
+    }
+
+    /**
+     * Push all values to args if provided
+     */
+    protected pushAll(args: string[], values?: string[]): void {
+        if (values) {
+            args.push(...values);
         }
     }
 }

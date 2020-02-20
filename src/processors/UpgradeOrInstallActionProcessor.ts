@@ -51,7 +51,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         extra: Joi.array().items(Joi.string()),
     })
         .required()
-        .options({ abortEarly: true });
+        .options({ abortEarly: true, allowUnknown: false });
 
     /**
      * @inheritdoc
@@ -94,7 +94,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         if (this.options.variables) {
             if (this.options.variables.files) {
                 this.options.variables.files.forEach((f: string) => {
-                    args.push('-f', FSUtil.getAbsolutePath(f, this.snapshot.wd));
+                    this.pushPathValue(args, '-f', f);
                 });
             }
 
@@ -129,7 +129,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
 
                     const filePath = await tempPathsRegistry.createTempFile();
                     await writeFileAsync(filePath, dump(fileContentObject), 'utf8');
-                    args.push('-f', filePath);
+                    this.pushPathValue(args, '-f', filePath);
                 }
             }
 
@@ -137,13 +137,11 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
                 const tmpFile = await tempPathsRegistry.createTempFile(false, '.yml');
                 const yml = dump(this.options.variables.inline);
                 await writeFileAsync(tmpFile, yml, 'utf8');
-                args.push('-f', tmpFile);
+                this.pushPathValue(args, '-f', tmpFile);
             }
         }
 
-        if (this.options.extra) {
-            args.push(...this.options.extra);
-        }
+        this.pushAll(args, this.options.extra);
 
         args.push(this.options.release);
 

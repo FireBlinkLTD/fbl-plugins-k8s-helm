@@ -47,8 +47,8 @@ This is the most recommended way. Create `package.json` next to your flow file w
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "@fbl-plguins/k8s-helm": "1.0.1",
-    "fbl": "1.8.0"
+    "@fbl-plugins/k8s-helm": "1.1.1",
+    "fbl": "1.12.0"
   }
 }
 ```
@@ -59,18 +59,18 @@ After that you can use `yarn fbl <args>` to execute your flow or even register a
 
 ### Global installation
 
-`npm i -g @fbl-plguins/k8s-helm`
+`npm i -g @fbl-plugins/k8s-helm`
 
 ### Register plugin to be accessible by fbl
 
-- via cli: `fbl -p @fbl-plguins/k8s-helm <args>`
+- via cli: `fbl -p @fbl-plugins/k8s-helm <args>`
 - via flow:
 
 ```yaml
 requires:
-  fbl: '>=1.8.0'
+  fbl: '>=1.12.0 <2.0.0'
   plugins:
-    '@fbl-plguins/k8s-helm': '>=1.0.1'
+    '@fbl-plugins/k8s-helm': '>=1.1.1'
 
 pipeline:
   # your flow goes here
@@ -78,6 +78,7 @@ pipeline:
 
 ## Action Handlers
 
+- [helm update --install](./docs/UpdateOrInstall.md)
 - [helm delete](./docs/Delete.md)
 - [helm test](./docs/Test.md)
-- [helm update --install](./docs/UpdateOrInstall.md)
+- [helm repo add](./docs/RepoAdd.md)

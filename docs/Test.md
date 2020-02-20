@@ -28,6 +28,7 @@ pipeline:
 
     # [optional] List of extra arguments to append to the command.
     # Refer to `helm help delete` for all available options
-    extra: --tiller-namespace
-      kube-system
+    extra:
+      - --tiller-namespace
+      - kube-system
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@fbl-plugins/k8s-helm",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "FBL plugin for K8s Helm CLI",
   "main": "dist/index.js",
   "scripts": {
