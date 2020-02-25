@@ -2317,10 +2317,10 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.0"
 
-fbl@1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/fbl/-/fbl-1.13.0.tgz#8f19df23c284afb2ddc426d267252dd15caf7eb8"
-  integrity sha512-4ffr9186ZrpW0pH0vaQJSyDubHg4Q/+pFHW2Rs7RDLzLttce0v3vFtznCiKgioO1hE6WFT6CbK8LUXXat+aGVw==
+fbl@1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/fbl/-/fbl-1.13.1.tgz#e7f74d90a94768f3f1e611a8336bb34c90136bc5"
+  integrity sha512-ti5tXkAcT1a1JSYvraCJxtUe0nv8b2Ocw03Ud8G5pqrdaqruwjtpZEunCuSu5VV1368NlTSbTaWbXwP206CNPA==
   dependencies:
     cliui "6.0.0"
     colors "1.4.0"
