@@ -29,6 +29,10 @@ Sensitive information can be hosted inside the Git repo and encrypted with [@fbl
 
 Flexibility of the deployment is the key concept of FBL and plugins, as we never know what challenges we need to resolve the following day.
 
+## Examples
+
+Check [fbl-examples](https://github.com/FireBlinkLTD/fbl-examples) repository for usage examples.
+
 ## Integration
 
 There are multiple ways how plugin can be integrated into your flow.
