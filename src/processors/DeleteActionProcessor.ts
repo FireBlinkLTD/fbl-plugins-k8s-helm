@@ -26,7 +26,7 @@ export class DeleteActionProcessor extends BaseActionProcessor {
      * @inheritdoc
      */
 
-    getValidationSchema(): Joi.SchemaLike | null {
+    getValidationSchema(): Joi.Schema | null {
         return DeleteActionProcessor.validationSchema;
     }
 

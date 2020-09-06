@@ -26,7 +26,7 @@ export class TestActionProcessor extends BaseActionProcessor {
      * @inheritdoc
      */
 
-    getValidationSchema(): Joi.SchemaLike | null {
+    getValidationSchema(): Joi.Schema | null {
         return TestActionProcessor.validationSchema;
     }
 

@@ -27,7 +27,7 @@ export class AddRepoActionProcessor extends BaseActionProcessor {
      * @inheritdoc
      */
 
-    getValidationSchema(): Joi.SchemaLike | null {
+    getValidationSchema(): Joi.Schema | null {
         return AddRepoActionProcessor.validationSchema;
     }
 

@@ -1,4 +1,4 @@
-FROM fireblink/kind:1.17.0
+FROM fireblink/kind:1.19.0
 
 RUN npm i -g http-server
 

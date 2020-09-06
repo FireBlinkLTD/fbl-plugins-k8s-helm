@@ -57,7 +57,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
      * @inheritdoc
      */
 
-    getValidationSchema(): Joi.SchemaLike | null {
+    getValidationSchema(): Joi.Schema | null {
         return UpgradeOrInstallActionProcessor.validationSchema;
     }
 
@@ -66,8 +66,9 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
      */
     async execute(): Promise<void> {
         this.snapshot.log(
-            `Ugrading or installing release ${this.options.release} of helm chart ${this.options.chart}@${this.options
-                .version || 'latest'}`,
+            `Ugrading or installing release ${this.options.release} of helm chart ${this.options.chart}@${
+                this.options.version || 'latest'
+            }`,
         );
 
         const args = await this.prepareCLIArgs();

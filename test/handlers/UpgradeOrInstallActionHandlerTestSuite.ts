@@ -20,11 +20,8 @@ class UpgradeOrInstallActionHandlerTestSuite {
         const childProcessService = Container.get(ChildProcessService);
         const code = await childProcessService.exec('helm', ['ls', '--short'], '.', {
             stdout: (chunk: any) => {
-                let parts: string[] = chunk
-                    .toString()
-                    .trim()
-                    .split('\n');
-                parts = parts.map(p => p.trim()).filter(p => p.length > 0);
+                let parts: string[] = chunk.toString().trim().split('\n');
+                parts = parts.map((p) => p.trim()).filter((p) => p.length > 0);
 
                 releases.push(...parts);
             },
@@ -137,7 +134,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const api = new APIRequestProcessor();
         const pods = await api.getAll('/api/v1/namespaces/default/pods');
-        const pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+        const pod = pods.items.find((p) => p.metadata.name.indexOf(options.release) >= 0);
 
         assert(pod);
 
@@ -165,7 +162,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const api = new APIRequestProcessor();
         const pods = await api.getAll('/api/v1/namespaces/default/pods');
-        const pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+        const pod = pods.items.find((p) => p.metadata.name.indexOf(options.release) >= 0);
 
         assert(pod);
 
@@ -181,7 +178,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
             },
         };
 
-        options.force = true;
+        options.force = false; // if true, update will fail with `invalid: spec.clusterIP: Invalid value: ""`
         options.wait = false;
         options.extra = ['--debug'];
 
@@ -191,7 +188,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
         await processor.execute();
 
         const newPods = await api.getAll('/api/v1/namespaces/default/pods');
-        const filteredPods = newPods.items.filter(p => p.metadata.name.indexOf(options.release) >= 0);
+        const filteredPods = newPods.items.filter((p) => p.metadata.name.indexOf(options.release) >= 0);
 
         assert.strictEqual(filteredPods.length, 2);
         assert.strictEqual(filteredPods[0].metadata.labels.app, filteredPods[1].metadata.labels.app);
@@ -248,7 +245,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const api = new APIRequestProcessor();
         const pods = await api.getAll('/api/v1/namespaces/default/pods');
-        const pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+        const pod = pods.items.find((p) => p.metadata.name.indexOf(options.release) >= 0);
 
         assert(pod);
     }
@@ -289,7 +286,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
         const api = new APIRequestProcessor();
         const pods = await api.getAll('/api/v1/namespaces/default/pods');
-        const pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+        const pod = pods.items.find((p) => p.metadata.name.indexOf(options.release) >= 0);
 
         assert(pod);
     }
