@@ -3,6 +3,9 @@ import { BaseActionProcessor } from '../BaseActionProcessor';
 
 export class AddRepoActionProcessor extends BaseActionProcessor {
     private static validationSchema = Joi.object({
+        // custom helm v2 binary name or path
+        binary: Joi.string().optional(),
+
         name: Joi.string().required(),
         url: Joi.string().required(),
 
@@ -39,7 +42,7 @@ export class AddRepoActionProcessor extends BaseActionProcessor {
         this.snapshot.log(`Adding repo ${name} ${url}`);
 
         const args = this.prepareCLIArgs();
-        await this.execHelmCommand(args, debug);
+        await this.execHelmCommand(args, debug, this.options.binary);
     }
 
     /**

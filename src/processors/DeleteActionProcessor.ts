@@ -3,6 +3,9 @@ import { BaseActionProcessor } from './BaseActionProcessor';
 
 export class DeleteActionProcessor extends BaseActionProcessor {
     private static validationSchema = Joi.object({
+        // custom helm v2 binary name or path
+        binary: Joi.string().optional(),
+
         // release name
         release: Joi.string().required(),
 
@@ -37,7 +40,7 @@ export class DeleteActionProcessor extends BaseActionProcessor {
         this.snapshot.log(`Deleting release ${this.options.release}`);
 
         const args = this.prepareCLIArgs();
-        await this.execHelmCommand(args, this.options.debug);
+        await this.execHelmCommand(args, this.options.debug, this.options.binary);
     }
 
     /**

@@ -82,7 +82,8 @@ pipeline:
 
 ## Action Handlers
 
-- [helm update --install](./docs/UpdateOrInstall.md)
-- [helm delete](./docs/Delete.md)
-- [helm test](./docs/Test.md)
-- [helm repo add](./docs/RepoAdd.md)
+- Helm V3 only: [helm update --install](./docs/UpdateOrInstall.md)
+- Helm V2 only: [helm update --install](./docs/UpdateOrInstall_V2.md)
+- Helm V2 and V3: [helm delete](./docs/Delete.md)
+- Helm V2 and V3: [helm test](./docs/Test.md)
+- Helm V2 and V3: [helm repo add](./docs/RepoAdd.md)

@@ -16,6 +16,10 @@ Action handler that allows to delete the release.
 ```yaml
 pipeline:
   helm.del:
+    # [optional] Custom helm binary name/path
+    # Default value: helm
+    binary: 'helm_v3'
+
     # [required] Release name.
     release: 'string'
 

@@ -15,6 +15,10 @@ Action handler that allows to test the release.
 ```yaml
 pipeline:
   helm.test:
+    # [optional] Custom helm binary name/path
+    # Default value: helm
+    binary: 'helm_v3'
+
     # [required] Release name.
     release: 'string'
 

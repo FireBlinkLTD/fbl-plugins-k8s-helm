@@ -23,6 +23,7 @@ module.exports = <IPlugin>{
         new handlers.DeleteActionHandler(),
         new handlers.TestActionHandler(),
         new handlers.UpgradeOrInstallActionHandler(),
+        new handlers.UpgradeOrInstallV2ActionHandler(),
         new handlers.AddRepoActionHandler(),
     ],
 

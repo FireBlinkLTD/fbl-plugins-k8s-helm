@@ -4,6 +4,7 @@ import Container from 'typedi';
 export abstract class BaseActionProcessor extends ActionProcessor {
     /**
      * Execute "helm" command
+     * @param binary
      * @param {string[]} args
      * @param {string} wd
      * @return {Promise<IExecOutput>}
@@ -11,21 +12,23 @@ export abstract class BaseActionProcessor extends ActionProcessor {
     async execHelmCommand(
         args: string[],
         debug: boolean,
+        binary?: string,
     ): Promise<{
         code: number;
         stdout: string;
         stderr: string;
     }> {
+        binary = binary || 'helm';
         const childProcessService = Container.get(ChildProcessService);
 
         const stdout: string[] = [];
         const stderr: string[] = [];
 
         if (debug) {
-            this.snapshot.log(`Running command "helm ${args.join(' ')}"`);
+            this.snapshot.log(`Running command "${binary} ${args.join(' ')}"`);
         }
 
-        const code = await childProcessService.exec('helm', args, this.snapshot.wd, {
+        const code = await childProcessService.exec(binary, args, this.snapshot.wd, {
             stdout: (chunk: any) => {
                 stdout.push(chunk.toString().trim());
             },

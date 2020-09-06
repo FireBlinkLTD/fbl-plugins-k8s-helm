@@ -10,7 +10,7 @@ import { BaseActionProcessor } from './BaseActionProcessor';
 const writeFileAsync = promisify(writeFile);
 const existsAsync = promisify(exists);
 
-export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
+export class UpgradeOrInstallV2ActionProcessor extends BaseActionProcessor {
     private static validationSchema = Joi.object({
         // custom helm v2 binary name or path
         binary: Joi.string().optional(),
@@ -61,7 +61,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
      */
 
     getValidationSchema(): Joi.Schema | null {
-        return UpgradeOrInstallActionProcessor.validationSchema;
+        return UpgradeOrInstallV2ActionProcessor.validationSchema;
     }
 
     /**
@@ -88,7 +88,7 @@ export class UpgradeOrInstallActionProcessor extends BaseActionProcessor {
         const args: string[] = ['upgrade', '--install'];
 
         this.pushWithValue(args, '--namespace', this.options.namespace);
-        this.pushWithValue(args, '--timeout', this.options.timeout && this.options.timeout + 's');
+        this.pushWithValue(args, '--timeout', this.options.timeout);
         this.pushWithValue(args, '--version', this.options.version);
 
         this.pushWithoutValue(args, '--wait', this.options.wait);

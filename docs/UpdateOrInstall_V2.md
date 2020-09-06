@@ -1,17 +1,17 @@
-# Update or Install Helm Chart
+# Update or Install Helm Chart (for Helm V2)
 
 Action handler that allows to install new / update existing helm chart release.
 
-**ID:** `com.fireblink.fbl.plugins.k8s.helm.upgrade`
+**ID:** `com.fireblink.fbl.plugins.k8s.helm.upgrade.v2`
 
 **Aliases:**
 
-- `fbl.plugins.k8s.helm.upgrade`
-- `fbl.plugins.k8s.helm.install`
-- `k8s.helm.upgrade`
-- `k8s.helm.install`
-- `helm.upgrade`
-- `helm.install`
+- `fbl.plugins.k8s.helm.upgrade.v2`
+- `fbl.plugins.k8s.helm.install.v2`
+- `k8s.helm.upgrade.v2`
+- `k8s.helm.install.v2`
+- `helm.upgrade.v2`
+- `helm.install.v2`
 
 ## Syntax:
 
@@ -20,7 +20,7 @@ pipeline:
   helm.install:
     # [optional] Custom helm binary name/path
     # Default value: helm
-    binary: 'helm_v3'
+    binary: 'helm_v2'
 
     # [required] Release name.
     release: 'string'

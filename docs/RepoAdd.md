@@ -15,6 +15,10 @@ Action handler that allows to add new repository.
 ```yaml
 pipeline:
   helm.repo.add:
+    # [optional] Custom helm binary name/path
+    # Default value: helm
+    binary: 'helm_v3'
+
     # [required] Name of the repository to add
     name: repo_name
 
