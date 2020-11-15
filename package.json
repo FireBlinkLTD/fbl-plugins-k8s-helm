@@ -21,7 +21,7 @@
   "author": "FireBlink LTD",
   "license": "MIT",
   "dependencies": {
-    "joi": "17.2.1",
+    "joi": "17.3.0",
     "js-yaml": "3.14.0",
     "typedi": "0.8.0"
   },
