@@ -1,7 +1,6 @@
 import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, TempPathsRegistry, ChildProcessService } from 'fbl';
 import * as assert from 'assert';
-import { Container } from 'typedi';
 import { APIRequestProcessor } from '@fireblink/k8s-api-client';
 
 import { UpgradeOrInstallActionHandler } from '../../src/handlers';
@@ -17,7 +16,7 @@ chai.use(chaiAsPromised);
 class UpgradeOrInstallActionHandlerTestSuite {
     async after(): Promise<void> {
         const releases: string[] = [];
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
         const code = await childProcessService.exec('helm', ['ls', '--short'], '.', {
             stdout: (chunk: any) => {
                 let parts: string[] = chunk.toString().trim().split('\n');
@@ -36,8 +35,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
             await childProcessService.exec('helm', ['delete', ...releases], '.');
         }
 
-        await Container.get(TempPathsRegistry).cleanup();
-        Container.reset();
+        await TempPathsRegistry.instance.cleanup();
     }
 
     @test()
@@ -102,7 +100,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
     @test()
     async installLocalChartWithVariablesTemplate(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
+        const tempPathsRegistry = TempPathsRegistry.instance;
 
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();
@@ -252,7 +250,7 @@ class UpgradeOrInstallActionHandlerTestSuite {
 
     @test()
     async installChartFromRepositoryWithVariablesFromFile(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
+        const tempPathsRegistry = TempPathsRegistry.instance;
 
         const actionHandler = new UpgradeOrInstallActionHandler();
         const context = ContextUtil.generateEmptyContext();

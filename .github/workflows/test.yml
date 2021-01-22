@@ -1,0 +1,31 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      - run: yarn install
+      - run: yarn docker:test
+
+      # send test coverage
+      - run: bash <(curl -s https://codecov.io/bash) -f ./coverage/coverage.lcov
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage/
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mochawesome-report
+          path: ./mochawesome-report/

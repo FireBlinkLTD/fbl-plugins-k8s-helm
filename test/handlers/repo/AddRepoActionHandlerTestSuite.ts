@@ -2,7 +2,6 @@ import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, ChildProcessService } from 'fbl';
 import { AddRepoActionHandler } from '../../../src/handlers';
 import * as assert from 'assert';
-import Container from 'typedi';
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -70,7 +69,7 @@ class AddRepoActionHandlerTestSuite {
 
     @test()
     async addRepo(): Promise<void> {
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
 
         const actionHandler = new AddRepoActionHandler();
         const context = ContextUtil.generateEmptyContext();

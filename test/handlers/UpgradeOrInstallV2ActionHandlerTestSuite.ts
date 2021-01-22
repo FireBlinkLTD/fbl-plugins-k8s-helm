@@ -1,7 +1,6 @@
 import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, TempPathsRegistry, ChildProcessService } from 'fbl';
 import * as assert from 'assert';
-import { Container } from 'typedi';
 import { APIRequestProcessor } from '@fireblink/k8s-api-client';
 
 import { UpgradeOrInstallV2ActionHandler } from '../../src/handlers';
@@ -19,7 +18,7 @@ const binary = 'helm_v2';
 class UpgradeOrInstallV2ActionHandlerTestSuite {
     async after(): Promise<void> {
         const releases: string[] = [];
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
         const code = await childProcessService.exec('helm', ['ls', '--short'], '.', {
             stdout: (chunk: any) => {
                 let parts: string[] = chunk.toString().trim().split('\n');
@@ -38,8 +37,7 @@ class UpgradeOrInstallV2ActionHandlerTestSuite {
             await childProcessService.exec('helm', ['delete', ...releases], '.');
         }
 
-        await Container.get(TempPathsRegistry).cleanup();
-        Container.reset();
+        await TempPathsRegistry.instance.cleanup();
     }
 
     @test()
@@ -106,7 +104,7 @@ class UpgradeOrInstallV2ActionHandlerTestSuite {
 
     @test()
     async installLocalChartWithVariablesTemplate(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
+        const tempPathsRegistry = TempPathsRegistry.instance;
 
         const actionHandler = new UpgradeOrInstallV2ActionHandler();
         const context = ContextUtil.generateEmptyContext();
@@ -260,7 +258,7 @@ class UpgradeOrInstallV2ActionHandlerTestSuite {
 
     @test()
     async installChartFromRepositoryWithVariablesFromFile(): Promise<void> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
+        const tempPathsRegistry = TempPathsRegistry.instance;
 
         const actionHandler = new UpgradeOrInstallV2ActionHandler();
         const context = ContextUtil.generateEmptyContext();

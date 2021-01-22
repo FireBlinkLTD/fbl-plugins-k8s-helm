@@ -1,5 +1,4 @@
 import { ActionProcessor, ChildProcessService, FSUtil } from 'fbl';
-import Container from 'typedi';
 
 export abstract class BaseActionProcessor extends ActionProcessor {
     /**
@@ -19,7 +18,7 @@ export abstract class BaseActionProcessor extends ActionProcessor {
         stderr: string;
     }> {
         binary = binary || 'helm';
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
 
         const stdout: string[] = [];
         const stderr: string[] = [];

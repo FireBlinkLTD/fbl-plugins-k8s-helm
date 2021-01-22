@@ -1,7 +1,6 @@
 import { suite, test } from 'mocha-typescript';
 import { ActionSnapshot, ContextUtil, ChildProcessService } from 'fbl';
 import * as assert from 'assert';
-import { Container } from 'typedi';
 import { APIRequestProcessor } from '@fireblink/k8s-api-client';
 
 import { DeleteActionHandler } from '../../src/handlers';
@@ -62,7 +61,7 @@ class DeleteActionHandlerTestSuite {
 
     @test()
     async deleteRelease(): Promise<void> {
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
 
         const options = {
             release: 'test-del',
@@ -74,7 +73,7 @@ class DeleteActionHandlerTestSuite {
             ['install', options.release, 'test/assets/helm/test', '--wait'],
             '.',
             {
-                stderr: str => {
+                stderr: (str) => {
                     console.error(str.toString());
                 },
             },
@@ -93,11 +92,11 @@ class DeleteActionHandlerTestSuite {
 
         let pod: any;
         for (let i = 0; i < 30; i++) {
-            await new Promise(res => setTimeout(res, 1000));
+            await new Promise((res) => setTimeout(res, 1000));
 
             const api = new APIRequestProcessor();
             const pods = await api.getAll('/api/v1/namespaces/default/pods');
-            pod = pods.items.find(p => p.metadata.name.indexOf(options.release) >= 0);
+            pod = pods.items.find((p) => p.metadata.name.indexOf(options.release) >= 0);
 
             if (!pod) {
                 break;

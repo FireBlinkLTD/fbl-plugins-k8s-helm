@@ -2,7 +2,7 @@
 
 Install, Update, Delete helm chart releases with ease in your [fbl](https://fbl.fireblink.com) flows.
 
-[![CircleCI](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm.svg?style=svg)](https://circleci.com/gh/FireBlinkLTD/fbl-plugins-k8s-helm)
+[![Tests](https://github.com/FireBlinkLTD/fbl-plugins-k8s-helm/workflows/Tests/badge.svg)](https://github.com/FireBlinkLTD/fbl-plugins-k8s-helm/actions?query=workflow%3ATests)
 [![Known Vulnerabilities](https://snyk.io/test/github/FireBlinkLTD/fbl-plugins-k8s-helm/badge.svg)](https://snyk.io/test/github/FireBlinkLTD/fbl-plugins-k8s-helm)
 [![codecov](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-k8s-helm/branch/master/graph/badge.svg)](https://codecov.io/gh/FireBlinkLTD/fbl-plugins-k8s-helm)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/FireBlinkLTD/fbl-plugins-k8s-helm.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/FireBlinkLTD/fbl-plugins-k8s-helm/alerts/)

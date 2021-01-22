@@ -3,7 +3,6 @@ import { ActionSnapshot, ContextUtil, ChildProcessService } from 'fbl';
 import * as assert from 'assert';
 
 import { TestActionHandler } from '../../src/handlers';
-import Container from 'typedi';
 
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
@@ -61,7 +60,7 @@ class TestActionHandlerTestSuite {
 
     @test()
     async testRelease(): Promise<void> {
-        const childProcessService = Container.get(ChildProcessService);
+        const childProcessService = ChildProcessService.instance;
 
         const options = {
             release: 'test-release',

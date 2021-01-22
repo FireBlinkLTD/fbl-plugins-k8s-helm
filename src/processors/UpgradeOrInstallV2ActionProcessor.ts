@@ -1,9 +1,8 @@
 import { FSUtil, TempPathsRegistry, FlowService, ContextUtil } from 'fbl';
 import * as Joi from 'joi';
-import Container from 'typedi';
 import { promisify } from 'util';
 import { writeFile, exists } from 'fs';
-import { dump, safeLoad } from 'js-yaml';
+import { dump, load } from 'js-yaml';
 
 import { BaseActionProcessor } from './BaseActionProcessor';
 
@@ -82,8 +81,8 @@ export class UpgradeOrInstallV2ActionProcessor extends BaseActionProcessor {
      * Prepare CLI args
      */
     private async prepareCLIArgs(): Promise<string[]> {
-        const tempPathsRegistry = Container.get(TempPathsRegistry);
-        const flowService = Container.get(FlowService);
+        const tempPathsRegistry = TempPathsRegistry.instance;
+        const flowService = FlowService.instance;
 
         const args: string[] = ['upgrade', '--install'];
 
@@ -116,7 +115,7 @@ export class UpgradeOrInstallV2ActionProcessor extends BaseActionProcessor {
                         this.parameters,
                     );
 
-                    let fileContentObject = safeLoad(fileContent);
+                    let fileContentObject = load(fileContent);
 
                     // resolve local template
                     fileContentObject = await flowService.resolveOptionsWithNoHandlerCheck(
