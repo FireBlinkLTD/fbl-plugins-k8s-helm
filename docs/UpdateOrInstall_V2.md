@@ -17,7 +17,7 @@ Action handler that allows to install new / update existing helm chart release.
 
 ```yaml
 pipeline:
-  helm.install:
+  helm.install.v2:
     # [optional] Custom helm binary name/path
     # Default value: helm
     binary: 'helm_v2'
