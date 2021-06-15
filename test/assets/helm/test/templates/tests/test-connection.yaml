@@ -8,8 +8,7 @@ metadata:
     "helm.sh/hook": test-success
 spec:
   containers:
-    - name: wget
+    - name: echo
       image: busybox
-      command: ['wget']
-      args:  ['{{ include "test.fullname" . }}:{{ .Values.service.port }}']
+      command: ["sh", "-c", "echo 'success'"]
   restartPolicy: Never

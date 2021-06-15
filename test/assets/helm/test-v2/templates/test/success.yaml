@@ -7,6 +7,6 @@ metadata:
 spec:
   containers:
   - name: {{ .Release.Name }}-success-test
-    image: busybox    
+    image: busybox
     command: ["sh", "-c", "echo 'success'"]
   restartPolicy: Never
